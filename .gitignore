@@ -1,0 +1,12 @@
+# 원문 PDF·추출 텍스트는 저장소에 올리지 않음 (외교부 원문은 위키 페이지의 링크로 참조)
+pdf/
+raw/
+site/
+site_preview.tgz
+*.canvas
+__pycache__/
+scratchpad/
+scripts/CLAUDE.md.bak
+.obsidian/workspace*.json
+.obsidian/cache
+_to_delete_git/
