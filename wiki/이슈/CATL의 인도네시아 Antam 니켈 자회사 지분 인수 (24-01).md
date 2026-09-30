@@ -7,6 +7,7 @@ countries: [동남아, 중국]
 policies: [자원민족주의, IRA·FEOC]
 sectors: [EV·배터리]
 relevance: A
+category: 생산국 정책·자원개발
 tags: [issue_article, 니켈, 인도네시아, 중국자본, 하류화]
 ---
 # CATL의 인도네시아 Antam 니켈 자회사 지분 인수 (24-01)

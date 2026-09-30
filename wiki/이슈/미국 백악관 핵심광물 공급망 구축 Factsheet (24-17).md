@@ -7,6 +7,7 @@ countries: [미국, 중국, 한국]
 policies: []
 sectors: [EV·배터리]
 relevance: A
+category: 산업정책·투자·국가자본
 tags: [issue_article, 공급망, 보조금, 관세, 희토류, 배터리]
 ---
 # 미국 백악관 핵심광물 공급망 구축 Factsheet (24-17)

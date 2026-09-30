@@ -7,6 +7,7 @@ countries: [미국, 중국]
 policies: [UFLPA]
 sectors: [태양광·폴리실리콘]
 relevance: B
+category: 미국 관세·무역조치
 tags: [issue_article, UFLPA, 강제노동, 폴리실리콘, EWS]
 ---
 # 미국 UFLPA 집행 동향과 폴리실리콘 우선 집행 (23-13)

@@ -7,6 +7,7 @@ countries: [중남미, 호주, 중국, 미국]
 policies: [자원민족주의]
 sectors: [EV·배터리]
 relevance: A
+category: 생산국 정책·자원개발
 tags: [issue_article, 리튬, 국유화, EWS]
 ---
 # 칠레 국가리튬전략과 Codelco 마리쿤가 염호 개발 (24-03)

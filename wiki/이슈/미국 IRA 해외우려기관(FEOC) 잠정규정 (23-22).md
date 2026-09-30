@@ -7,6 +7,7 @@ countries: [미국, 중국, 한국]
 policies: [IRA·FEOC]
 sectors: [EV·배터리]
 relevance: A
+category: 산업정책·투자·국가자본
 tags: [issue_article, IRA, FEOC, 배터리광물, 세액공제]
 ---
 # 미국 IRA 해외우려기관(FEOC) 잠정규정 (23-22)

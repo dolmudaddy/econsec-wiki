@@ -7,6 +7,7 @@ countries: [호주, 중남미, 한국, 중국]
 policies: []
 sectors: [EV·배터리]
 relevance: A
+category: 생산국 정책·자원개발
 tags: [issue_article, 리튬, M&A, DLE]
 ---
 # Rio Tinto의 Arcadium Lithium 인수와 칠레 리튬 개발 (24-19)

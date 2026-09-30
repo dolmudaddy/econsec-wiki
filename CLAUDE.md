@@ -37,13 +37,13 @@ econsec_wiki/
 ├─ manifest.json / manifest.csv / new_issues.json
 ├─ pdf/                   ← {issue}_{seq}.pdf  (예 26-18_369153.pdf)
 ├─ raw/                   ← PDF→마크다운 원문 {issue}.md (수정 금지)
-├─ scripts/               ← extract.py, screen_minerals.py, lint.py, build_dashboard.py, build_site.py
+├─ scripts/               ← extract.py, screen_minerals.py, lint.py, build_dashboard.py, build_site.py, categories.py(이슈 분류 목록)
 ├─ site/                  ← build_site.py 산출물(정적 HTML). git 제외, 매번 재생성
 ├─ .github/workflows/pages.yml  ← push 시 GitHub Pages 자동 배포
 └─ wiki/                  ← Obsidian vault 루트
    ├─ 00_Home.md           ← 진입점, 최근 업데이트, 허브 링크
    ├─ 광물별/              ← ★ 위키의 중심. 광물 1개 = 페이지 1개 (+ _대시보드.md)
-   ├─ 이슈/                ← 핵심광물 관련 기사(article) 단위 페이지
+   ├─ 이슈/                ← 핵심광물 관련 기사(article) 단위 페이지 (+ _분류.md: category별 목차, 자동 생성). 하위 폴더를 만들지 않는다 — 분류는 frontmatter `category`로만
    ├─ 정책/                ← 국가·제도·법령 페이지 (수출통제, 관세, IRA·FEOC, CRMA …)
    ├─ 연계분야/            ← 반도체·배터리·원자력·방산·AI전력·조선·태양광 등 수요산업 페이지
    ├─ 국가/                ← 미국·중국·EU·일본·인도·호주·아프리카·한국 등
@@ -122,6 +122,7 @@ countries: [미국, 중국]
 policies: [미국 회수가능 핵심광물 수출제한]
 sectors: [반도체, 방산]
 relevance: A                                  # A 직접 / B 간접
+category: 미국 관세·무역조치                    # §4-2-1 목록에서 1개
 tags: [issue_article, 수출통제]
 ---
 # 미국 회수가능 핵심광물 소재 수출제한 (26-16)
@@ -138,6 +139,21 @@ tags: [issue_article, 수출통제]
 ## 출처
 경제안보 Review 26-16호 pp.20-29, 외교부 경제안보외교센터, 2026-08-21
 ```
+
+#### 4-2-1. 이슈 분류(category) — 고정 목록 (코드판: scripts/categories.py)
+기사의 **주된 조치 주체·수단**으로 1개만 고른다. 광물 축은 광물별/, 시간 축은 호별/이 맡으므로 여기선 조치·주제 유형만 본다.
+| category | 기준 |
+|---|---|
+| 중국 수출통제·자원무기화 | 중국 수출통제·금수·쿼터/총량·광물자원법·역외적용·반외국제재, 통제 영향 분석 |
+| 미국 관세·무역조치 | 232·301·IEEPA·상호관세, AD/CVD, UFLPA, 미국 광물 수출제한, 관세 협상 결과 |
+| 산업정책·투자·국가자본 | IRA·FEOC, DPA·국방 조달·NDAA, 정부 지분·가격하한 계약, 해외투자심사, 국내 생산 행정명령 |
+| 동맹·다자 협력 | MSP·G7·IPEF·FORGE·팍스 실리카·ATCM, 양자 광물협정, 정상회담 합의 |
+| 생산국 정책·자원개발 | 자원국 국유화·원광 금지·수출세·쿼터, 산지 광산·제련 투자, 심해채굴·그린란드 |
+| 소비국 전략·비축 | EU CRMA·배터리규정, 일본 경제안보추진법·외환법, 한국·인도 전략·목록·비축·조기경보 |
+| 수급·가격·재활용·기술 | 수급 통계, 가격, 재활용·도시광산, 소재·대체 기술 |
+| 연계산업·거시 동향 | 반도체·원자력·배터리·AI전력 등 수요산업, 지정학·에너지·제재 등 거시 이슈 (광물은 파급) |
+| 종합 분석·전망 | 연간 결산, 주요국 전략 종합, 싱크탱크·의회 보고서 |
+새 분류는 이 표와 categories.py에 먼저 추가한다. `lint.py`가 누락·미등록 category를 오류로 잡는다.
 
 ### 4-3. 정책 / 연계분야 / 국가 페이지 (공통 골격)
 frontmatter `type: policy|sector|country`, 정의 한 문단 → **관련 광물 표**(광물 | 영향 방향 | 근거 호) → 연대기 표 → 관련 페이지 링크.
@@ -187,7 +203,7 @@ tags: [issue, 2026]
 4. 관련 정책·연계분야·국가 페이지의 "관련 광물 표"·연대기 갱신 (없으면 생성)
 5. `wiki/연표/핵심광물 정책 연표.md`에 행 추가
 6. `python scripts/lint.py` → 깨진 링크·frontmatter·미등록 광물명 0건 확인
-7. `python scripts/build_dashboard.py`
+7. `python scripts/build_dashboard.py` (광물별/_대시보드.md + 이슈/_분류.md 재생성)
 8. `wiki/00_Home.md` 최근 업데이트 표에 `| 날짜 | 호 | 등급 | 갱신된 광물 페이지 |` 한 줄 추가
 9. `python scripts/build_site.py` → "깨진 링크 0개" 확인 → git commit & push (§11)
 
@@ -234,7 +250,7 @@ python sync_econsec.py --all           # 전체 재점검
 python scripts/extract.py 26-18        # 특정 호 추출 (--all 전체)
 python scripts/screen_minerals.py 26-18
 python scripts/lint.py
-python scripts/build_dashboard.py
+python scripts/build_dashboard.py      # _대시보드 + 이슈/_분류 목차 재생성
 python scripts/build_site.py           # wiki/ → site/ (정적 사이트). --serve 붙이면 localhost:8000 미리보기
 git add -A && git commit -m "update: 26-19" && git push   # 웹 사이트 재배포
 ```
@@ -260,7 +276,8 @@ git add -A && git commit -m "update: 26-19" && git push   # 웹 사이트 재배
   - 이후 운영: 매 세션 §0 신규 호 동기화 → §5 절차
 - [x] 광물 페이지 전체 재검토 (2026-09-30 완료: 26개 광물 현재 판단을 "2026-09-30 기준, 전 호 재검토"로 재작성 + 궤적(2022→2026) + 인사이트 로그 재검토 항목, 타임라인·로그 정렬 전수 점검)
 - 추출 보정 필요: 25-06 (기사 경계 어긋남). 24-12·24-15는 수동 분할로 처리 완료. 24-19는 PDF 폰트 인코딩 깨짐으로 텍스트 추출 불가 → 페이지 이미지(pymupdf 렌더링) 판독으로 처리 완료(같은 문제 호가 또 나오면 동일 방식)
-- 스크립트: scripts/extract.py · screen_minerals.py · lint.py · build_dashboard.py · minerals.py(§3 목록 코드판) · wikilib.py
+- 스크립트: scripts/extract.py · screen_minerals.py · lint.py · build_dashboard.py · minerals.py(§3 목록 코드판) · categories.py(§4-2-1 이슈 분류 코드판) · wikilib.py
+- 2026-09-30 결정: 이슈 257건을 가상 분류(frontmatter `category` 9종)로 묶음 — 폴더 이동 없음, 사이트 사이드바는 이슈 > 분류별 하위 트리(최신순), 목차 [[이슈/_분류]]
 - 운영 메모: 호 처리는 에이전트가 호별·이슈 페이지 + 메모(scratchpad/memo/{issue}.md)를 쓰고, 메인 세션이 광물·정책 페이지에 통합. 추가된 정책 페이지: 정책/G7 핵심광물 협력, 정책/중국 반외국제재법, 정책/UFLPA, 정책/미국 회수가능 핵심광물 수출제한, 정책/팍스 실리카, 정책/핵심광물 무역협정(ATCM), 정책/비축제도, 정책/FORGE(지전략적자원협력포럼), 정책/미국 정부 지분 투자(국가자본) (122조 관세는 정책/미국 IEEPA 관세에 통합), 정책/해저광물 개발(심해채굴), 국가/그린란드 (2026-09-29 3차 세션)
 - 운영 교훈(2026-09-30): 20호 배치는 통합 도중 세션이 끊기면 미커밋 상태로 남는다 → 배치를 10호 단위로 나눠 통합·lint·커밋까지 끝낸 뒤 다음 10호로 진행.
 - 2026-09-29 결정: 헬륨은 §3 추가(광물별/헬륨), 브롬은 §3 미추가 — 핵심광물(총론) 리스크 절에서만 다룬다.

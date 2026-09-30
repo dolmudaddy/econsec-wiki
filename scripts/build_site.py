@@ -14,13 +14,16 @@ from pathlib import Path
 from urllib.parse import quote
 import markdown
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from categories import CATEGORY_NAMES
+
 ROOT = Path(__file__).resolve().parent.parent
 WIKI = ROOT / "wiki"
 SITE = ROOT / "site"
 SKIP_DIRS = {"_templates", ".obsidian", ".trash"}
 FOLDER_ORDER = ["광물별", "이슈", "정책", "연계분야", "국가", "호별", "연표"]
 SITE_TITLE = "경제안보 Review 핵심광물 위키"
-META_KEYS = ["issue", "date", "updated", "last_issue", "minerals", "countries", "policies",
+META_KEYS = ["category", "issue", "date", "updated", "last_issue", "minerals", "countries", "policies",
              "sectors", "relevance", "mineral_relevance", "group", "key_countries", "linked_sectors"]
 
 # ---------- frontmatter ----------
@@ -133,7 +136,7 @@ a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
 .top button{display:none;background:none;border:1px solid var(--line);border-radius:6px;padding:6px 10px;color:var(--fg)}
 .wrap{display:flex;min-height:calc(100vh - 50px)}
 nav{width:270px;flex:none;border-right:1px solid var(--line);background:var(--side);padding:12px 8px;overflow:auto;position:sticky;top:50px;height:calc(100vh - 50px);font-size:14px}
-nav details{margin-bottom:4px}nav summary{cursor:pointer;font-weight:600;padding:4px 6px;list-style:none}nav summary::before{content:"▸ ";color:var(--muted)}nav details[open] summary::before{content:"▾ "}
+nav details{margin-bottom:4px}nav details.sub{margin:0 0 2px 14px}nav details.sub summary{font-weight:500;font-size:13px}nav summary{cursor:pointer;font-weight:600;padding:4px 6px;list-style:none}nav summary::before{content:"▸ ";color:var(--muted)}nav details[open] summary::before{content:"▾ "}
 nav ul{list-style:none;margin:0;padding:0 0 4px 14px}nav li a{display:block;padding:2px 6px;border-radius:4px;color:var(--fg);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}nav li a.cur,nav li a:hover{background:var(--chip);color:var(--accent);text-decoration:none}
 main{flex:1;min-width:0;padding:24px 40px 60px;max-width:1000px}
 main h1{margin-top:0}main h2{border-bottom:1px solid var(--line);padding-bottom:4px;margin-top:2em}
@@ -168,11 +171,28 @@ def build_nav(pages, cur):
         groups.setdefault(p.folder or "기타", []).append(p)
     order = [f for f in FOLDER_ORDER if f in groups] + [f for f in groups if f not in FOLDER_ORDER]
     out = [f'<div style="padding:4px 6px 10px"><a href="{rel_href(cur, "index.html")}">🏠 홈</a></div>']
+    li = lambda p: f'<li><a href="{rel_href(cur, p.href)}"{" class=cur" if p is cur else ""}>{html.escape(p.title)}</a></li>'
+    cnt = lambda n: f" <span style='color:var(--muted);font-weight:400'>({n})</span>"
     for f in order:
         items = sorted(groups[f], key=lambda p: (not p.name.startswith("_"), p.name))
         opened = " open" if f == cur.folder else ""
-        lis = "".join(f'<li><a href="{rel_href(cur, p.href)}"{" class=cur" if p is cur else ""}>{html.escape(p.title)}</a></li>' for p in items)
-        out.append(f"<details{opened}><summary>{html.escape(f)} <span style='color:var(--muted);font-weight:400'>({len(items)})</span></summary><ul>{lis}</ul></details>")
+        if f == "이슈":   # 이슈는 frontmatter category(scripts/categories.py)별 하위 트리, 각 분류 안은 최신순
+            index = [p for p in items if p.name.startswith("_")]
+            cats = {}
+            for p in items:
+                if not p.name.startswith("_"):
+                    c = p.meta.get("category")
+                    cats.setdefault(c if c in CATEGORY_NAMES else "미분류", []).append(p)
+            sub = []
+            for c in CATEGORY_NAMES + ["미분류"]:
+                ps = sorted(cats.get(c, []), key=lambda p: (str(p.meta.get("date", "")), p.name), reverse=True)
+                if ps:
+                    o = " open" if cur in ps else ""
+                    sub.append(f"<details{o} class=sub><summary>{html.escape(c)}{cnt(len(ps))}</summary><ul>{''.join(li(p) for p in ps)}</ul></details>")
+            n = len(items) - len(index)
+            out.append(f"<details{opened}><summary>{html.escape(f)}{cnt(n)}</summary><ul>{''.join(li(p) for p in index)}</ul>{''.join(sub)}</details>")
+            continue
+        out.append(f"<details{opened}><summary>{html.escape(f)}{cnt(len(items))}</summary><ul>{''.join(li(p) for p in items)}</ul></details>")
     return "".join(out)
 
 def chips(meta):

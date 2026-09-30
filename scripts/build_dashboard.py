@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 wiki/광물별/_대시보드.md 재생성 — 광물 페이지 frontmatter + 이슈/호별 페이지 frontmatter 집계.
+wiki/이슈/_분류.md 재생성 — 이슈 페이지 frontmatter `category`(scripts/categories.py) 기준 분류 목차.
 
 열: 광물 | 최근 언급 호 | 최근 3개월 언급 횟수 | 최신 정책 이벤트 | 현재 판단(첫 줄)
 '최근 3개월'은 manifest 최신 발간일 기준 92일.
@@ -13,6 +14,7 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # Windows cp949 콘�
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from minerals import MINERALS, GROUP_ORDER
+from categories import CATEGORIES, CATEGORY_NAMES
 from wikilib import ROOT, WIKI, parse
 
 
@@ -58,6 +60,47 @@ def latest_event(body):
     return f"{r[0]} {r[1]} — {r[2]}".replace("|", "／")[:90]
 
 
+def build_issue_index():
+    """이슈 페이지를 category별로 묶은 목차 wiki/이슈/_분류.md 생성."""
+    groups = {c: [] for c in CATEGORY_NAMES}
+    for p in (WIKI / "이슈").glob("*.md"):
+        if p.stem.startswith("_"):
+            continue
+        fm, _ = parse(p)
+        if not fm or fm.get("type") != "issue_article":
+            continue
+        c = fm.get("category")
+        groups.setdefault(c if c in CATEGORIES else "미분류", []).append((str(fm.get("date", "")), fm, p.stem))
+    for rows in groups.values():
+        rows.sort(key=lambda r: (r[0], r[2]), reverse=True)
+    total = sum(len(v) for v in groups.values())
+    out = ["---", "type: index", f"updated: {date.today().isoformat()}", "tags: [index, 이슈]", "---",
+           "# 이슈 분류 목차", "",
+           f"> 자동 생성: `python scripts/build_dashboard.py` · 이슈 기사 {total}건을 조치·주제 유형 9개로 분류(각 기사 1개, frontmatter `category`). "
+           "광물 축은 [[광물별/_대시보드]], 시간 축은 호별 페이지를 본다.", "",
+           "| 분류 | 기사 수 | A / B | 최신 기사 |", "|---|---|---|---|"]
+    for c, rows in groups.items():
+        if not rows:
+            continue
+        a = sum(1 for r in rows if r[1].get("relevance") == "A")
+        latest = f"{rows[0][0]} {rows[0][1].get('issue', '')}"
+        out.append(f"| [[이슈/_분류#{c}\\|{c}]] | {len(rows)} | {a} / {len(rows) - a} | {latest} |")
+    out.append("")
+    for c, rows in groups.items():
+        if not rows:
+            continue
+        out += [f"## {c}", "", f"> {CATEGORIES.get(c, '분류 미지정 — frontmatter category를 채울 것')}", "",
+                "| 날짜 | 호 | 기사 | 등급 | 광물 |", "|---|---|---|---|---|"]
+        for d, fm, stem in rows:
+            title = re.sub(r"\s*\([^()]*\)$", "", stem)
+            ms = ", ".join(fm.get("minerals") or [])
+            iss = fm.get("issue", "")
+            out.append(f"| {d} | [[호별/{iss}\\|{iss}]] | [[이슈/{stem}\\|{title}]] | {fm.get('relevance', '')} | {ms} |")
+        out.append("")
+    (WIKI / "이슈" / "_분류.md").write_text("\n".join(out), encoding="utf-8")
+    print(f"이슈/_분류.md 생성 ({total}건, 미분류 {len(groups.get('미분류', []))}건)")
+
+
 def main():
     ref = latest_date()
     since = ref - timedelta(days=92)
@@ -87,6 +130,7 @@ def main():
         out.append("")
     (WIKI / "광물별" / "_대시보드.md").write_text("\n".join(out), encoding="utf-8")
     print(f"_대시보드.md 생성 ({len(MINERALS)}개 광물, 기준일 {ref})")
+    build_issue_index()
 
 
 if __name__ == "__main__":

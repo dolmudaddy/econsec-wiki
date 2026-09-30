@@ -7,6 +7,7 @@ countries: [미국, 중국]
 policies: [UFLPA]
 sectors: [태양광·폴리실리콘]
 relevance: B
+category: 미국 관세·무역조치
 tags: [issue_article, 강제노동, UFLPA, 비철금속]
 ---
 # 미국 UFLPA 제재목록에 중국 비철금속 기업 추가 (24-22)

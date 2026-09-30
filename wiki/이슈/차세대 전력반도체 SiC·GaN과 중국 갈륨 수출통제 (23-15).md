@@ -7,6 +7,7 @@ countries: [중국, 미국, EU, 일본, 한국]
 policies: [중국 수출통제]
 sectors: [반도체, EV·배터리, AI·데이터센터 전력]
 relevance: B
+category: 수급·가격·재활용·기술
 tags: [issue_article, 전력반도체, 갈륨, 게르마늄, 수출통제]
 ---
 # 차세대 전력반도체 SiC·GaN과 중국 갈륨 수출통제 (23-15)

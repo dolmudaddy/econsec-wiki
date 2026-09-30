@@ -7,6 +7,7 @@ countries: [EU]
 policies: [EU CRMA·산업가속화법]
 sectors: []
 relevance: A
+category: 소비국 전략·비축
 tags: [issue_article, CRMA, EU, 재활용]
 ---
 # EU 핵심원자재법(CRMA) 3자협의 타결 (23-21)

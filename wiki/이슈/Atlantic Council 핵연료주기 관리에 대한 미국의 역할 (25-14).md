@@ -7,6 +7,7 @@ countries: [미국, 러시아, 중국]
 policies: []
 sectors: [원자력·SMR·HALEU]
 relevance: B
+category: 연계산업·거시 동향
 tags: [issue_article, 원자력, 핵연료주기]
 ---
 # Atlantic Council 핵연료주기 관리에 대한 미국의 역할 (25-14)

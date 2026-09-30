@@ -7,6 +7,7 @@ countries: [미국, 캐나다]
 policies: [미국 정부 지분 투자(국가자본)]
 sectors: []
 relevance: A
+category: 산업정책·투자·국가자본
 tags: [issue_article, 정부지분, 광산개발, 인허가]
 ---
 # 미국 알래스카 Ambler Road 승인과 Trilogy Metals 지분 인수 (25-19)

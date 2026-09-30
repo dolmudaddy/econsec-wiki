@@ -7,6 +7,7 @@ countries: [EU, 중국, 한국]
 policies: [EU CRMA·산업가속화법, 해외투자심사]
 sectors: [EV·배터리, 태양광·폴리실리콘]
 relevance: B
+category: 소비국 전략·비축
 tags: [issue_article, EU, 역내우대, 투자심사]
 ---
 # EU 산업가속화법 Made in Europe 규정 초안 발표 (26-05)

@@ -7,6 +7,7 @@ countries: [중남미]
 policies: [자원민족주의]
 sectors: [EV·배터리]
 relevance: A
+category: 생산국 정책·자원개발
 tags: [issue_article, 리튬, 국유화, 민관합작, 칠레]
 ---
 # 칠레 SQM-Codelco 리튬 민관합작 양해각서 (24-01)

@@ -7,6 +7,7 @@ countries: [우크라이나, 미국, 러시아, EU]
 policies: [미국 핵심광물 협정(양자)]
 sectors: []
 relevance: A
+category: 동맹·다자 협력
 tags: [issue_article, 우크라이나, 광물협정, 연구동향]
 ---
 # SIPRI 우크라이나 광물자원 평가와 미-우크라이나 광물협정의 한계 (25-11)

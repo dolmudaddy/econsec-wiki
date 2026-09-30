@@ -7,6 +7,7 @@ countries: [미국, 중국, 한국]
 policies: [IRA·FEOC]
 sectors: [EV·배터리]
 relevance: A
+category: 산업정책·투자·국가자본
 tags: [issue_article, 세액공제, 원산지, FEOC]
 ---
 # 미국 IRA 30D·FEOC 최종규정과 흑연 FEOC 적용 유예 (24-09)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-위키 린트 — 깨진 링크 · frontmatter 누락 · 미등록 광물명 · 파일명 금지문자 · 광물 페이지 6축 섹션 점검.
+위키 린트 — 깨진 링크 · frontmatter 누락 · 미등록 광물명 · 이슈 category · 파일명 금지문자 · 광물 페이지 6축 섹션 점검.
 
 사용법: python scripts/lint.py        (문제 0건이면 exit 0)
 """
@@ -11,6 +11,7 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # Windows cp949 콘�
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from minerals import MINERAL_NAMES
+from categories import CATEGORY_NAMES
 from wikilib import WIKI, parse, pages, links
 
 TYPES = {"mineral", "issue_article", "policy", "sector", "country", "issue", "timeline", "home", "dashboard", "index"}
@@ -46,6 +47,8 @@ def main():
                     errs.append(f"{rel}: 섹션 누락 '{ax}'")
         if fm.get("type") == "issue_article" and fm.get("relevance") not in ("A", "B"):
             errs.append(f"{rel}: relevance는 A/B만 (C는 이슈 페이지 금지)")
+        if fm.get("type") == "issue_article" and fm.get("category") not in CATEGORY_NAMES:
+            errs.append(f"{rel}: category 누락/미등록 ('{fm.get('category')}') — scripts/categories.py 목록에서 1개")
         for l in links(body):
             if l not in by_rel and l not in by_name:
                 errs.append(f"{rel}: 깨진 링크 [[{l}]]")

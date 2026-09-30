@@ -7,6 +7,7 @@ countries: [미국]
 policies: [미국 방산 핵심광물 연계]
 sectors: [방산]
 relevance: A
+category: 산업정책·투자·국가자본
 tags: [issue_article, 정부지분, 국가자본, 희토류]
 ---
 # 미국 정부 USA Rare Earth 지분 투자 (26-03)

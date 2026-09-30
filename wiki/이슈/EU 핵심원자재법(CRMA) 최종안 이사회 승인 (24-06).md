@@ -7,6 +7,7 @@ countries: [EU]
 policies: [EU CRMA·산업가속화법]
 sectors: [EV·배터리]
 relevance: A
+category: 소비국 전략·비축
 tags: [issue_article, CRMA, EU, 원자재]
 ---
 # EU 핵심원자재법(CRMA) 최종안 이사회 승인 (24-06)

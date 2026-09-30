@@ -7,6 +7,7 @@ countries: [미국]
 policies: [미국 IEEPA 관세, 미국 232조 관세, 미국 301조 관세]
 sectors: []
 relevance: B
+category: 미국 관세·무역조치
 tags: [issue_article, 관세, IEEPA]
 ---
 # 미국 연방대법원 IEEPA 관세 위법 판결과 대체 관세 수단 (26-04)

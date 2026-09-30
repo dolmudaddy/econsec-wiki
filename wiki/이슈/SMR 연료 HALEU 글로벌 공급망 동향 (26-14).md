@@ -7,6 +7,7 @@ countries: [러시아, 미국, 중국, EU, 캐나다, 아프리카, 한국]
 policies: []
 sectors: [원자력·SMR·HALEU, AI·데이터센터 전력]
 relevance: A
+category: 수급·가격·재활용·기술
 tags: [issue_article, 원자력, 공급망]
 ---
 # SMR 연료 HALEU 글로벌 공급망 동향 (26-14)

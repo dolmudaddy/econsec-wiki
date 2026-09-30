@@ -7,6 +7,7 @@ countries: [미국]
 policies: [미국 핵심광물 협정(양자)]
 sectors: []
 relevance: A
+category: 동맹·다자 협력
 tags: [issue_article, 탐사, 지질조사, 동맹협력]
 ---
 # 미국 자원탐사기회법안(FORE Act) 발의 (25-09)

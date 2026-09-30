@@ -7,6 +7,7 @@ countries: [미국, 한국]
 policies: [미국 방산 핵심광물 연계, 미국 정부 지분 투자(국가자본)]
 sectors: [방산, 반도체, EV·배터리]
 relevance: A
+category: 산업정책·투자·국가자본
 tags: [issue_article, 영구자석, 국가자본, 방산]
 ---
 # 미국 국방부·상무부 Vulcan·ReElement 희토류 자석 자금지원 (25-21)

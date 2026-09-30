@@ -7,6 +7,7 @@ countries: [EU]
 policies: [EU CRMA·산업가속화법, 해외투자심사]
 sectors: [EV·배터리]
 relevance: B
+category: 소비국 전략·비축
 tags: [issue_article, EU, 경제안보]
 ---
 # 유럽의회 선거 계기 EU 경제안보 조치 평가와 CRMA (24-09)

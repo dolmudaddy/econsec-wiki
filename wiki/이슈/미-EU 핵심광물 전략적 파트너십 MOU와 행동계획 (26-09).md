@@ -7,6 +7,7 @@ countries: [미국, EU, 중국]
 policies: [미국 핵심광물 협정(양자), 비축제도, 해외투자심사, 핵심광물 무역협정(ATCM)]
 sectors: []
 relevance: A
+category: 동맹·다자 협력
 tags: [issue_article, 핵심광물협력, 가격하한]
 ---
 # 미-EU 핵심광물 전략적 파트너십 MOU와 행동계획 (26-09)

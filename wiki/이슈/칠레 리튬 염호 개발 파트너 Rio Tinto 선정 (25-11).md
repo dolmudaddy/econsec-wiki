@@ -7,6 +7,7 @@ countries: [중남미, 호주, 한국, 중국]
 policies: [자원민족주의]
 sectors: [EV·배터리]
 relevance: A
+category: 생산국 정책·자원개발
 tags: [issue_article, 리튬, 칠레, 국영기업]
 ---
 # 칠레 리튬 염호 개발 파트너 Rio Tinto 선정 (25-11)

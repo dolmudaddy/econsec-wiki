@@ -7,6 +7,7 @@ countries: [EU, 한국, 미국, 중국, 캐나다, 우크라이나, 아프리카
 policies: [EU CRMA·산업가속화법, 비축제도, IRA·FEOC]
 sectors: [EV·배터리, 풍력·로봇, 반도체, 방산]
 relevance: A
+category: 소비국 전략·비축
 tags: [issue_article, EU, 핵심원자재법, CRMA, 영구자석, 비축, 재활용]
 ---
 # EU 핵심원자재법(CRMA) 초안 주요 내용 및 전망 (23-05)

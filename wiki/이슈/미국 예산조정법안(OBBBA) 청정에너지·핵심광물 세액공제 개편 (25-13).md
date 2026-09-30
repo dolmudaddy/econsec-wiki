@@ -7,6 +7,7 @@ countries: [미국, 중국, 한국]
 policies: [IRA·FEOC]
 sectors: [EV·배터리, 태양광·폴리실리콘, 반도체, ESS, 풍력·로봇]
 relevance: B
+category: 산업정책·투자·국가자본
 tags: [issue_article, 세액공제, PFE, OBBBA]
 ---
 # 미국 예산조정법안(OBBBA) 청정에너지·핵심광물 세액공제 개편 (25-13)

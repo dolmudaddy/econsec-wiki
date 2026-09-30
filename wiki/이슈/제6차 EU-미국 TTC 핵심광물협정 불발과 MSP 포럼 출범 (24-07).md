@@ -7,6 +7,7 @@ countries: [미국, EU]
 policies: [핵심광물안보파트너십(MSP), IRA·FEOC]
 sectors: [EV·배터리, 반도체]
 relevance: A
+category: 동맹·다자 협력
 tags: [issue_article, TTC, MSP, 핵심광물협정]
 ---
 # 제6차 EU-미국 TTC 핵심광물협정 불발과 MSP 포럼 출범 (24-07)

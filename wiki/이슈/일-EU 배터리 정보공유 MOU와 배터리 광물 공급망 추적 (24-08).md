@@ -7,6 +7,7 @@ countries: [일본, EU]
 policies: [EU CRMA·산업가속화법]
 sectors: [EV·배터리]
 relevance: B
+category: 동맹·다자 협력
 tags: [issue_article, 배터리, 이력추적, 배터리여권]
 ---
 # 일-EU 배터리 정보공유 MOU와 배터리 광물 공급망 추적 (24-08)
