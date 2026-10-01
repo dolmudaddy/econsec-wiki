@@ -10,6 +10,7 @@ wiki/ (Obsidian vault) → site/ (정적 웹사이트) 변환기
       좌측 폴더 탐색, 클라이언트 검색(search.json), 역링크(백링크), 다크모드, 모바일 대응
 """
 import re, json, sys, shutil, html, os
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from urllib.parse import quote
 import markdown
@@ -23,6 +24,8 @@ SITE = ROOT / "site"
 SKIP_DIRS = {"_templates", ".obsidian", ".trash"}
 FOLDER_ORDER = ["광물별", "이슈", "정책", "연계분야", "국가", "호별", "연표"]
 SITE_TITLE = "경제안보 Review 핵심광물 위키"
+BUILD_DATE = datetime.now(timezone(timedelta(hours=9))).strftime("%Y-%m-%d")   # KST
+COUNTS_MARK = "<!-- PAGE_COUNTS -->"      # 소개.md 안의 자리표시자 → 폴더별 페이지 수 표
 META_KEYS = ["category", "issue", "date", "updated", "last_issue", "minerals", "countries", "policies",
              "sectors", "relevance", "mineral_relevance", "group", "key_countries", "linked_sectors"]
 
@@ -151,6 +154,7 @@ code{background:var(--code);padding:1px 4px;border-radius:3px;font-size:.9em}pre
 #results{position:absolute;top:48px;left:0;right:0;margin:0 auto;max-width:720px;background:var(--bg);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.15);max-height:70vh;overflow:auto;display:none;z-index:9}
 #results a{display:block;padding:8px 12px;border-bottom:1px solid var(--line);color:var(--fg)}#results a small{display:block;color:var(--muted)}#results a:hover{background:var(--side);text-decoration:none}
 footer{font-size:12px;color:var(--muted);padding:20px 40px;border-top:1px solid var(--line)}
+.site-footer p{margin:3px 0}.site-footer a{color:var(--muted);text-decoration:underline}.site-footer strong{font-weight:600}
 @media(max-width:860px){nav{position:fixed;left:-280px;transition:left .2s;z-index:8;height:calc(100vh - 50px)}nav.open{left:0}.top button{display:block}main{padding:16px}}
 """
 JS = """
@@ -166,11 +170,13 @@ document.addEventListener('click',e=>{if(!res.contains(e.target)&&e.target!==q)r
 def build_nav(pages, cur):
     groups = {}
     for p in pages:
-        if p.name == "00_Home":
+        if p.name == "00_Home" or not p.folder:
             continue
-        groups.setdefault(p.folder or "기타", []).append(p)
+        groups.setdefault(p.folder, []).append(p)
     order = [f for f in FOLDER_ORDER if f in groups] + [f for f in groups if f not in FOLDER_ORDER]
-    out = [f'<div style="padding:4px 6px 10px"><a href="{rel_href(cur, "index.html")}">🏠 홈</a></div>']
+    top = [f'<a href="{rel_href(cur, "index.html")}">🏠 홈</a>']
+    top += [f'<a href="{rel_href(cur, p.href)}">{html.escape(p.name)}</a>' for p in pages if not p.folder and p.name != "00_Home"]
+    out = [f'<div style="padding:4px 6px 10px">{" · ".join(top)}</div>']
     li = lambda p: f'<li><a href="{rel_href(cur, p.href)}"{" class=cur" if p is cur else ""}>{html.escape(p.title)}</a></li>'
     cnt = lambda n: f" <span style='color:var(--muted);font-weight:400'>({n})</span>"
     for f in order:
@@ -217,17 +223,36 @@ def render(page, pages, resolve, by_key):
     crumb = f'<div class="crumb">{html.escape(page.folder)}</div>' if page.folder else ""
     src = f'<div class="crumb">원본: wiki/{html.escape(page.key)}.md · updated {html.escape(str(page.meta.get("updated", "")))}</div>'
     return f"""<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="조성준 (Seong-Jun Cho), KIGAM">
 <title>{html.escape(page.title)} · {SITE_TITLE}</title><style>{CSS}</style></head>
 <body data-base="{base}"><div class="top"><button id="menu">☰</button><a class="brand" href="{base}index.html">{SITE_TITLE}</a>
 <input id="q" type="search" placeholder="검색 (광물·정책·국가·키워드)…" autocomplete="off"><div id="results"></div></div>
 <div class="wrap"><nav>{build_nav(pages, page)}</nav><main>{crumb}{chips(page.meta)}{content}{backlinks}{src}</main></div>
-<footer>출처: 외교부 경제안보외교센터 「경제안보 Review」 각 호. 본 위키의 요약·분석은 원문을 재구성한 것이며 편집자 판단은 별도 표기함. 원문 게시판: <a href="https://www.mofa.go.kr/www/brd/m_26799/list.do">mofa.go.kr</a></footer>
+<footer class="site-footer">
+  <p>출처: 외교부 경제안보외교센터 「경제안보 Review」 각 호. 본 위키의 요약·분석은 원문을 재구성한 것이며 편집자 판단은 별도 표기함. 원문 게시판: <a href="https://www.mofa.go.kr/www/brd/m_26799/list.do">mofa.go.kr</a></p>
+  <p>제작: <strong>조성준</strong> (한국지질자원연구원 KIGAM 책임연구원) · Created by <strong>Dr. Seong-Jun Cho</strong>, KIGAM · <a href="{base}{quote("소개")}.html">소개 / About</a></p>
+  <p>본 사이트는 개인 연구 목적의 2차 정리물로, 외교부 및 KIGAM의 공식 입장이 아닙니다. This site is an independent secondary compilation and does not represent the official views of MOFA or KIGAM.</p>
+  <p>© 2026 Seong-Jun Cho · 편집물 라이선스 CC BY-NC 4.0 (외교부 원문 제외) · 최종 빌드 {BUILD_DATE}</p>
+</footer>
 <script>{JS}</script></body></html>"""
+
+def counts_table(pages):
+    """폴더별 페이지 수 표 (자동 생성 목차 `_*`는 제외)."""
+    n = {}
+    for p in pages:
+        if p.folder and not p.name.startswith("_"):
+            n[p.folder] = n.get(p.folder, 0) + 1
+    order = [f for f in FOLDER_ORDER if f in n] + [f for f in n if f not in FOLDER_ORDER]
+    rows = ["| 구분 | 페이지 수 |", "|---|---|"] + [f"| {f} | {n[f]} |" for f in order]
+    return "\n".join(rows + [f"| **합계** | **{sum(n.values())}** |"])
 
 def main():
     pages = collect()
     if not pages:
         sys.exit("wiki/ 에 페이지가 없습니다.")
+    for p in pages:
+        if COUNTS_MARK in p.body:
+            p.body = p.body.replace(COUNTS_MARK, counts_table(pages))
     resolve = make_resolver(pages)
     by_key = {p.key: p for p in pages}
     # 1차: 링크 수집 (백링크용)

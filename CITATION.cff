@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "이 위키를 인용하실 때는 아래 정보를 사용해 주세요. / If you use this wiki, please cite it as below."
+title: "경제안보 Review 핵심광물 모니터링 위키 (Critical Minerals Monitoring Wiki based on MOFA Economic Security Review)"
+type: dataset
+authors:
+  - family-names: Cho
+    given-names: Seong-Jun
+    affiliation: "Korea Institute of Geoscience and Mineral Resources (KIGAM)"
+date-released: 2026-10-01
+url: "https://dolmudaddy.github.io/econsec-wiki/"
+repository-code: "https://github.com/dolmudaddy/econsec-wiki"
+license: CC-BY-NC-4.0
+keywords:
+  - critical minerals
+  - economic security
+  - supply chain
+  - 핵심광물
+  - 경제안보

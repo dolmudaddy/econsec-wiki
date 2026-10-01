@@ -265,6 +265,7 @@ git add -A && git commit -m "update: 26-19" && git push   # 웹 사이트 재배
   이후 주소는 `https://<계정>.github.io/<저장소명>/`.
 - Claude는 push 전에 반드시 `build_site.py`를 돌려 깨진 링크 0개를 확인한다. 깨진 링크가 있으면 push하지 말고 링크를 고친다.
 - 사이트 제목·폴더 순서·CSS는 `build_site.py` 상단 상수(`SITE_TITLE`, `FOLDER_ORDER`, `CSS`)에서 바꾼다.
+- 제작자 표기(2026-10-01): 모든 페이지에 `<meta name="author">`와 footer(출처·제작자·면책·CC BY-NC 4.0·최종 빌드일)가 들어간다 — 문안은 `build_site.py`의 `render()` 템플릿. `wiki/소개.md`(type: about)의 `<!-- PAGE_COUNTS -->`는 빌드 때 폴더별 페이지 수 표로 바뀐다. 인용 정보는 루트 `CITATION.cff`.
 
 ## 10. 진행 상태 (Claude가 갱신)
 - 마지막 동기화: 2026-10-01 (신규 0건) | 최신 호: 26-18 (2026-09-18) | manifest 97건

@@ -14,7 +14,7 @@ from minerals import MINERAL_NAMES
 from categories import CATEGORY_NAMES
 from wikilib import WIKI, parse, pages, links
 
-TYPES = {"mineral", "issue_article", "policy", "sector", "country", "issue", "timeline", "home", "dashboard", "index"}
+TYPES = {"mineral", "issue_article", "policy", "sector", "country", "issue", "timeline", "home", "dashboard", "index", "about"}
 MINERAL_AXES = ["## 1. 공급 구조", "## 2. 수요 연계", "## 3. 정책·조치 타임라인", "## 4. 리스크·이벤트",
                 "## 5. 한국 시사점", "## 6. 인사이트 로그"]
 BAD_CHARS = re.compile(r'[\\:*?"<>|]')
