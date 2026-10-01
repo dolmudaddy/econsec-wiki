@@ -135,7 +135,7 @@ CSS = """
 *{box-sizing:border-box}body{margin:0;font-family:-apple-system,"Segoe UI","Pretendard","Malgun Gothic","Apple SD Gothic Neo",sans-serif;background:var(--bg);color:var(--fg);line-height:1.6}
 a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
 .top{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--bg)}
-.top .brand{font-weight:700;white-space:nowrap}.top input{flex:1;max-width:520px;padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:var(--side);color:var(--fg);font-size:14px}
+.top .brand{font-weight:700;white-space:nowrap}.top .brand .by{font-weight:400;font-size:12px;color:var(--muted);margin-left:4px}.top input{flex:1;min-width:0;max-width:520px;padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:var(--side);color:var(--fg);font-size:14px}
 .top button{display:none;background:none;border:1px solid var(--line);border-radius:6px;padding:6px 10px;color:var(--fg)}
 .wrap{display:flex;min-height:calc(100vh - 50px)}
 nav{width:270px;flex:none;border-right:1px solid var(--line);background:var(--side);padding:12px 8px;overflow:auto;position:sticky;top:50px;height:calc(100vh - 50px);font-size:14px}
@@ -225,7 +225,7 @@ def render(page, pages, resolve, by_key):
     return f"""<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="author" content="조성준 (Seong-Jun Cho), KIGAM">
 <title>{html.escape(page.title)} · {SITE_TITLE}</title><style>{CSS}</style></head>
-<body data-base="{base}"><div class="top"><button id="menu">☰</button><a class="brand" href="{base}index.html">{SITE_TITLE}</a>
+<body data-base="{base}"><div class="top"><button id="menu">☰</button><a class="brand" href="{base}index.html">{SITE_TITLE} <span class="by">created by 조성준</span></a>
 <input id="q" type="search" placeholder="검색 (광물·정책·국가·키워드)…" autocomplete="off"><div id="results"></div></div>
 <div class="wrap"><nav>{build_nav(pages, page)}</nav><main>{crumb}{chips(page.meta)}{content}{backlinks}{src}</main></div>
 <footer class="site-footer">
