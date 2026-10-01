@@ -34,6 +34,19 @@ HEADER_JUNK = re.compile(
     r"^(ISSN.*|(?:\d{4}\s*)?Vol\.\s*\d+|\s*\d{2}-\d{1,2}호,.*|\d{1,3}|Economic Security Review|경제안보\s*Review|\d{2}-E?\d{1,2}호.*|\s*\d{4}\.\s*\d{1,2}\.\s*\d{1,2}\.?\s*\(.\)\s*)$"
 )
 
+# 자동 경계가 어긋나는 호의 기사 시작 페이지 수동 지정: {issue: {pdf 페이지: (섹션 라벨, 제목)}}
+# 지정된 호는 이 표의 페이지에서만 기사를 나눈다(페이지 상단 라벨은 무시). 라벨·제목은 목차 기준.
+ARTICLE_STARTS = {
+    # 25-06: 원본 러닝헤더 오기(pdf9 'Ⅰ', pdf17~19 'Ⅱ') + Ⅱ 섹션에 기사 2건
+    "25-06": {
+        4: ("Ⅰ. 경제안보 분석", "「미국 우선 투자정책」 분석 및 시사점"),
+        9: ("Ⅱ. 경제안보 현안", "2025년 중국 양회 경제 분야 주요 결과 및 시사점"),
+        13: ("Ⅱ. 경제안보 현안", "美 USTR 조선‧해운 분야 301조 조치 제안의 주요 내용 및 영향"),
+        17: ("Ⅲ. 경제안보 연구동향", "MERICS, 美-EU의 對중국 정책 우선순위 제언 보고서 발간"),
+        23: ("Ⅳ. EWS 공급망/에너지 동향", "EWS 공급망/에너지 관련 모니터링 결과 (기간: 2025.3.5.~2025.3.19.)"),
+    },
+}
+
 
 def load_manifest():
     m = json.loads((HERE / "manifest.json").read_text(encoding="utf-8"))
@@ -170,6 +183,7 @@ def extract(issue, meta, force=False):
            f"<!-- board_title: {r['title']} -->", ""]
     art_no, cur_key = 0, None
     front = True
+    starts = ARTICLE_STARTS.get(issue)
     for idx, lines in enumerate(pages, 1):
         if not lines:
             continue
@@ -207,12 +221,17 @@ def extract(issue, meta, force=False):
                 key = (nl, (title or "")[:15])
         if cur_key in (None, "FRONT", "BACK") and key is None:
             key = ("본문",)
+        manual = starts is not None
+        if manual:
+            key = ("수동", idx) if idx in starts else None
+            if key:
+                label, title = starts[idx]
         if key is not None and key != cur_key:
             art_no += 1
             head = label or "본문"
             t = (title or "").strip()
             # 제목이 두 줄로 나뉜 경우 다음 줄까지
-            if t and len(body) > 1 and len(t) < 40 and not re.match(r"^\d\.|^요약|전문관|연구원", body[1] if body[0] == t else ""):
+            if not manual and t and len(body) > 1 and len(t) < 40 and not re.match(r"^\d\.|^요약|전문관|연구원", body[1] if body[0] == t else ""):
                 nxt = body[1] if body and body[0].strip() == t else ""
                 if nxt and len(nxt) < 30 and not re.search(r"전문관|연구원|요약|^\d\.", nxt):
                     t = f"{t} {nxt.strip()}"
